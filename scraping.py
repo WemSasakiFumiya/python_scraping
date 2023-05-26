@@ -27,6 +27,7 @@ def get_scraping_data(prefecture, page_num):
                 'strong', class_='rstinfo-table__tel-num').text
             detail_data = {'title': title, 'img_url': img_url,
                            'address': address, 'phone_num': phone_num}
+            detail_data = [title, img_url, address, phone_num]
             detail_data_list.append(detail_data)
             sleep(1)
     return detail_data_list
