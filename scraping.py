@@ -16,9 +16,10 @@ key = os.environ['GSS_KEY']
 outh_file = 'gss_credential.json'
 
 
-def create_text(no, title, img, address, phone):
-    text = 'No：' + no + '\n' + 'タイトル：' + title + '\n' + '画像：' + \
-        img + '\n' + '住所：' + address + '\n' + '電話番号：' + phone + '\n\n'
+def create_text(data):
+    text = 'No：' + str(data['no']) + '\n' + 'タイトル：' + data['title'] + '\n' + '画像：' + \
+        data['img'] + '\n' + '住所：' + data['address'] + \
+        '\n' + '電話番号：' + data['phone'] + '\n\n'
     return text
 
 
@@ -66,16 +67,14 @@ class Scr():
                 # sleep(1)
 
         f = open('prefecture/' + self.prefecture + '.txt', 'a')
-        for pageUrl in scraping_data_dictionary:
-            f.write(create_text(
-                str(pageUrl['no']), pageUrl['title'], pageUrl['img'], pageUrl['address'], pageUrl['phone']))
+        for page_data in scraping_data_dictionary:
+            f.write(create_text(page_data))
         f.close()
         ws_titles = [ws.title for ws in wb.worksheets()]
         if not (self.prefecture in ws_titles):
             wb.add_worksheet(self.prefecture, rows=no + 10, cols=10)
         wb.values_append(self.prefecture, {'valueInputOption': 'USER_ENTERED'}, {
                          'values': scraping_data_list})
-        # return scraping_data
 
 
 sc = Scr('toyama', 1)
