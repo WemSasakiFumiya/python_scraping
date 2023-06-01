@@ -14,32 +14,32 @@ def create_driver(url):
     return driver
 
 
-def get_elements(seleniums, tag_name):
-    return seleniums.find_elements(By.TAG_NAME, tag_name)
+def get_elements(elements, tag_name):
+    return elements.find_elements(By.TAG_NAME, tag_name)
 
 
-def create_condition_number(content, filter_field):
-    return float(content) if filter_field == 'マグニチュード' else int(
-        content[2]) if content != '-' else 0
+def create_condition_number(selected_field, filter_field):
+    return float(selected_field) if filter_field == 'マグニチュード' else int(
+        selected_field[2]) if selected_field != '-' else 0
 
 
 def get_scraping_data(filter_field, filter_number):
     driver = create_driver(
         'https://www.data.jma.go.jp/multi/quake/index.html?lang=jp')
     time.sleep(1)
-    seleniums = get_elements(driver, 'tr')
-    titles = seleniums[0].text.split(' ')
+    elements = get_elements(driver, 'tr')
+    titles = elements[0].text.split(' ')
     select_field_index = titles.index(filter_field)
-    for i, value in enumerate(seleniums[2:], 2):
-        seleniums_td = get_elements(value, 'td')
-        contents = [value.text for value in seleniums_td]
-        content = contents[select_field_index]
+    for i, content in enumerate(elements[2:], 2):
+        elements_td = get_elements(content, 'td')
+        fields = [element.text for element in elements_td]
+        selected_field = fields[select_field_index]
         condition_number = create_condition_number(
-            content, filter_field)
+            selected_field, filter_field)
         if condition_number >= filter_number:
-            print(content)
+            print(selected_field)
 
     driver.quit()
 
 
-get_scraping_data('マグニチュード', 5)
+get_scraping_data('マグニチュード', 8)
