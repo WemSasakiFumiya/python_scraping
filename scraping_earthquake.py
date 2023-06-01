@@ -18,9 +18,10 @@ def get_scraping_data():
     driver = create_driver(
         'https://www.data.jma.go.jp/multi/quake/index.html?lang=jp')
     time.sleep(1)
-    web_elements = driver.find_elements(By.TAG_NAME, 'tr')
-    for content in web_elements:
+    elements = driver.find_elements(By.TAG_NAME, 'tr')
+    for content in elements:
         print(content.text)
+    driver.quit()
 
 
 get_scraping_data()
